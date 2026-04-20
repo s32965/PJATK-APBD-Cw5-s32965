@@ -41,4 +41,10 @@ public class RoomsControler : ControllerBase
             Name = "room3"
         }
     ];
+
+    [HttpGet]
+    public IActionResult GetAll()
+    {
+        return Ok(Rooms);
+    }
 }
