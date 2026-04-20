@@ -60,4 +60,17 @@ public class RoomsControler : ControllerBase
         
         return Ok(room);
     }
+
+    [HttpGet("buildings/{buildingCode}")]
+    public IActionResult GetByBuildingCode(string buildingCode)
+    {
+        var rooms = Rooms.FindAll(x => x.BuildingCode == buildingCode);
+
+        if (rooms.Count == 0)
+        {
+            return NotFound($"Room with buildingCode: {buildingCode} not found");
+        }
+        
+        return Ok(rooms);
+    }
 }
