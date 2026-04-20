@@ -47,4 +47,17 @@ public class RoomsControler : ControllerBase
     {
         return Ok(Rooms);
     }
+
+    [HttpGet("{id:int}")]
+    public IActionResult GetById(int id)
+    {
+        Room room = Rooms.FirstOrDefault(x => x.Id == id);
+
+        if (room == null)
+        {
+            return NotFound($"Room with id: {id} not found");
+        }
+        
+        return Ok(room);
+    }
 }
