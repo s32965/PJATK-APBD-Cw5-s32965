@@ -78,4 +78,11 @@ public class RoomsController : ControllerBase
         
         return Ok(rooms);
     }
+
+    [HttpPost]
+    public IActionResult Create([FromBody] Room room)
+    {
+        Rooms.Add(room);
+        return CreatedAtAction(nameof(GetById), new { id = room.Id }, room);
+    }
 }
