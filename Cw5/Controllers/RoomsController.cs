@@ -6,7 +6,7 @@ namespace Cw5.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 
-public class RoomsControler : ControllerBase
+public class RoomsController : ControllerBase
 {
     public static List<Room> Rooms =
     [
@@ -45,6 +45,11 @@ public class RoomsControler : ControllerBase
     [HttpGet]
     public IActionResult GetAll()
     {
+        if (Rooms.Count == 0)
+        {
+            return NotFound($"No rooms found");
+        }
+        
         return Ok(Rooms);
     }
 
