@@ -13,7 +13,7 @@ public class RoomsControler : ControllerBase
         new Room
         {
             Id = 1,
-            BuildingCode = "A",
+            BuildingCode = "B",
             Capacity = 100,
             Floor = 1,
             HasProjector = false,
@@ -51,7 +51,7 @@ public class RoomsControler : ControllerBase
     [HttpGet("{id:int}")]
     public IActionResult GetById(int id)
     {
-        Room room = Rooms.FirstOrDefault(x => x.Id == id);
+        var room = Rooms.FirstOrDefault(x => x.Id == id);
 
         if (room == null)
         {
@@ -60,9 +60,9 @@ public class RoomsControler : ControllerBase
         
         return Ok(room);
     }
-
+    
     [HttpGet("buildings/{buildingCode}")]
-    public IActionResult GetByBuildingCode(string buildingCode)
+    public IActionResult GetByBuildingCode([FromRoute] string buildingCode)
     {
         var rooms = Rooms.FindAll(x => x.BuildingCode == buildingCode);
 
