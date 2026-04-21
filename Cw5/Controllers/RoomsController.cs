@@ -85,4 +85,15 @@ public class RoomsController : ControllerBase
         Rooms.Add(room);
         return CreatedAtAction(nameof(GetById), new { id = room.Id }, room);
     }
+
+    [HttpDelete]
+    public IActionResult Delete([FromQuery] int id)
+    {
+        if (Rooms.FirstOrDefault(x => x.Id == id) != null)
+        {
+            return NotFound($"Room with id: {id} not found");
+        }
+        Rooms.Remove(Rooms.FirstOrDefault(x => x.Id == id));
+        return NoContent();
+    }
 }
