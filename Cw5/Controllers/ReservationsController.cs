@@ -46,4 +46,15 @@ public class ReservationsController : ControllerBase
         Reservations.Add(reservation);
         return CreatedAtAction(nameof(GetById), new { id = reservation.Id }, reservation);
     }
+    
+    [HttpDelete]
+    public IActionResult Delete([FromQuery] int id)
+    {
+        if (Reservations.FirstOrDefault(x => x.Id == id) != null)
+        {
+            return NotFound($"Reservation with id: {id} not found");
+        }
+        Reservations.Remove(Reservations.FirstOrDefault(x => x.Id == id));
+        return NoContent();
+    }
 }
