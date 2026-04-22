@@ -21,9 +21,22 @@ public class ReservationsController : ControllerBase
     {
         if (Reservations.Count == 0)
         {
-            return NotFound($"No rooms found");
+            return NotFound($"No reservations found");
         }
         
         return Ok(Reservations);
+    }
+    
+    [HttpGet("{id:int}")]
+    public IActionResult GetById(int id)
+    {
+        var room = Reservations.FirstOrDefault(x => x.Id == id);
+
+        if (room == null)
+        {
+            return NotFound($"Reservation with id: {id} not found");
+        }
+        
+        return Ok(room);
     }
 }
