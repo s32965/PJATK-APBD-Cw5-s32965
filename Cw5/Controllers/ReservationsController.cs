@@ -39,4 +39,11 @@ public class ReservationsController : ControllerBase
         
         return Ok(room);
     }
+    
+    [HttpPost]
+    public IActionResult Create([FromBody] Reservation reservation)
+    {
+        Reservations.Add(reservation);
+        return CreatedAtAction(nameof(GetById), new { id = reservation.Id }, reservation);
+    }
 }
