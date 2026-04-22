@@ -1,0 +1,99 @@
+using Microsoft.AspNetCore.Mvc;
+using Cw5.Models;
+
+namespace Cw5.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+
+public class RoomsController : ControllerBase
+{
+    public static List<Room> Rooms =
+    [
+        new Room
+        {
+            Id = 1,
+            BuildingCode = "B",
+            Capacity = 100,
+            Floor = 1,
+            HasProjector = false,
+            IsActive = true,
+            Name = "room1"
+        },
+        new Room
+        {
+            Id = 2,
+            BuildingCode = "B",
+            Capacity = 50,
+            Floor = 2,
+            HasProjector = true,
+            IsActive = false,
+            Name = "room2"
+        },
+        new Room
+        {
+            Id = 3,
+            BuildingCode = "C",
+            Capacity = 25,
+            Floor = 3,
+            HasProjector = true,
+            IsActive = true,
+            Name = "room3"
+        }
+    ];
+
+    [HttpGet]
+    public IActionResult GetAll()
+    {
+        if (Rooms.Count == 0)
+        {
+            return NotFound($"No rooms found");
+        }
+        
+        return Ok(Rooms);
+    }
+
+    [HttpGet("{id:int}")]
+    public IActionResult GetById(int id)
+    {
+        var room = Rooms.FirstOrDefault(x => x.Id == id);
+
+        if (room == null)
+        {
+            return NotFound($"Room with id: {id} not found");
+        }
+        
+        return Ok(room);
+    }
+    
+    [HttpGet("buildings/{buildingCode}")]
+    public IActionResult GetByBuildingCode([FromRoute] string buildingCode)
+    {
+        var rooms = Rooms.FindAll(x => x.BuildingCode == buildingCode);
+
+        if (rooms.Count == 0)
+        {
+            return NotFound($"Room with buildingCode: {buildingCode} not found");
+        }
+        
+        return Ok(rooms);
+    }
+
+    [HttpPost]
+    public IActionResult Create([FromBody] Room room)
+    {
+        Rooms.Add(room);
+        return CreatedAtAction(nameof(GetById), new { id = room.Id }, room);
+    }
+
+    [HttpDelete]
+    public IActionResult Delete([FromQuery] int id)
+    {
+        if (Rooms.FirstOrDefault(x => x.Id == id) != null)
+        {
+            return NotFound($"Room with id: {id} not found");
+        }
+        Rooms.Remove(Rooms.FirstOrDefault(x => x.Id == id));
+        return NoContent();
+    }
+}
